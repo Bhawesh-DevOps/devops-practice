@@ -1,16 +1,32 @@
 pipeline {
     agent any
+    
+    triggers {
+        pollSCM('* * * * *')
+    }
+    
     stages {
-        stage('Build Docker Image') {
+        stage('Terraform Init') {
             steps {
-                echo 'Docker Image ban rahi hai...'
-                sh 'docker build -t bhawesh-test-app .'
+                echo 'Initializing Terraform...'
+                sh 'terraform init'
             }
         }
-        stage('Verify Image') {
+        stage('Terraform Plan') {
             steps {
-                echo 'Check kar rahe hain ki image ban gayi ya nahi...'
-                sh 'docker images | grep bhawesh-test-app'
+                echo 'Checking infrastructure plan...'
+                sh 'terraform plan'
+            }
+        }
+        stage('Terraform Apply') {
+            steps {
+                echo 'Deploying infrastructure...'
+                sh 'terraform apply -auto-approve'
+            }
+        }
+        stage('Verify Deployment') {
+            steps {
+                sh 'cat jenkins_tf_test.txt'
             }
         }
     }
