@@ -1,9 +1,15 @@
 pipeline {
     agent any
+    
+    // Yeh block Jenkins ko har 1 minute mein GitHub check karne ko bolega
+    triggers {
+        pollSCM('* * * * *')
+    }
+    
     stages {
         stage('Hello from GitHub') {
             steps {
-                echo 'Yeh pipeline direct GitHub ke Jenkinsfile se run ho rahi hai!'
+                echo 'Yeh pipeline ab totally automated hai!'
             }
         }
         stage('System Check') {
