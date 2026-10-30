@@ -1,32 +1,22 @@
 pipeline {
     agent any
     
+    environment {
+        // TF_VAR_ prefix lagane se Jenkins direct Terraform ko variable pass karta hai
+        TF_VAR_env_name = "Production"
+    }
+    
     triggers {
         pollSCM('* * * * *')
     }
     
     stages {
-        stage('Terraform Init') {
+        stage('Terraform Execution') {
             steps {
-                echo 'Initializing Terraform...'
+                echo 'Running Terraform for Production...'
                 sh 'terraform init'
-            }
-        }
-        stage('Terraform Plan') {
-            steps {
-                echo 'Checking infrastructure plan...'
                 sh 'terraform plan'
-            }
-        }
-        stage('Terraform Apply') {
-            steps {
-                echo 'Deploying infrastructure...'
                 sh 'terraform apply -auto-approve'
-            }
-        }
-        stage('Verify Deployment') {
-            steps {
-                sh 'cat jenkins_tf_test.txt'
             }
         }
     }
