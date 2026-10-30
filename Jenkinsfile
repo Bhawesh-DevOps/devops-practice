@@ -1,18 +1,18 @@
 pipeline {
-    agent { 
-        label 'linux-worker' 
-    }
-    
-    triggers {
-        pollSCM('* * * * *')
-    }
-    
+    agent { label 'linux-worker' }
+
+    triggers { pollSCM('* * * * *') }
+
     stages {
-        stage('Agent Verification') {
+        stage('Docker Build on Worker') {
             steps {
-                echo 'Yeh pipeline ab Jenkins Master par nahi, Worker Node par chal rahi hai!'
-                sh 'hostname'
-                sh 'whoami'
+                echo 'Worker Node par organisation ki app image build ho rahi hai...'
+                sh 'docker build -t my-org-app .'
+            }
+        }
+        stage('Verify Image') {
+            steps {
+                sh 'docker images | grep my-org-app'
             }
         }
     }
