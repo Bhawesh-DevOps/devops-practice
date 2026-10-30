@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Hello from GitHub') {
             steps {
-                echo 'Yeh pipeline ab totally automated hai!'
+                echo 'Bina button dabaye pipeline chal gayi!'
             }
         }
         stage('System Check') {
