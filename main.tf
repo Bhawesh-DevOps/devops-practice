@@ -1,4 +1,12 @@
-resource "local_file" "test" {
-  content  = "Yeh file Jenkins aur Terraform ne milkar banayi hai!"
-  filename = "jenkins_tf_test.txt"
+variable "env_name" { 
+  default = "Dev" 
+}
+
+resource "local_file" "advanced_test" {
+  content  = "Yeh deployment ${var.env_name} environment ke liye Jenkins ne ki hai!"
+  filename = "${var.env_name}_server.txt"
+}
+
+output "deployed_file_name" {
+  value = local_file.advanced_test.filename
 }
