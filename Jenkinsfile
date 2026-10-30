@@ -1,9 +1,6 @@
 pipeline {
-    agent any
-    
-    environment {
-        // TF_VAR_ prefix lagane se Jenkins direct Terraform ko variable pass karta hai
-        TF_VAR_env_name = "Production"
+    agent { 
+        label 'linux-worker' 
     }
     
     triggers {
@@ -11,12 +8,11 @@ pipeline {
     }
     
     stages {
-        stage('Terraform Execution') {
+        stage('Agent Verification') {
             steps {
-                echo 'Running Terraform for Production...'
-                sh 'terraform init'
-                sh 'terraform plan'
-                sh 'terraform apply -auto-approve'
+                echo 'Yeh pipeline ab Jenkins Master par nahi, Worker Node par chal rahi hai!'
+                sh 'hostname'
+                sh 'whoami'
             }
         }
     }
