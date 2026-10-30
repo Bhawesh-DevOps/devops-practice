@@ -1,22 +1,16 @@
 pipeline {
     agent any
-    
-    // Yeh block Jenkins ko har 1 minute mein GitHub check karne ko bolega
-    triggers {
-        pollSCM('* * * * *')
-    }
-    
     stages {
-        stage('Hello from GitHub') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Bina button dabaye pipeline chal gayi!'
+                echo 'Docker Image ban rahi hai...'
+                sh 'docker build -t bhawesh-test-app .'
             }
         }
-        stage('System Check') {
+        stage('Verify Image') {
             steps {
-                echo 'Checking server details...'
-                sh 'uname -a'
-                sh 'uptime'
+                echo 'Check kar rahe hain ki image ban gayi ya nahi...'
+                sh 'docker images | grep bhawesh-test-app'
             }
         }
     }
